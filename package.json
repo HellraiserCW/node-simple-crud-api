@@ -1,0 +1,21 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "Simple crud api",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start:dev": "",
+    "start:prod": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HellraiserCW/node-simple-crud-api.git"
+  },
+  "author": "Kostiantyn Sakharov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HellraiserCW/node-simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/HellraiserCW/node-simple-crud-api#readme"
+}
