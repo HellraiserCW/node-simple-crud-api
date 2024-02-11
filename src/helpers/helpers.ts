@@ -15,6 +15,12 @@ export const validateUserData = (data: UserInput): Partial<User> | null => {
     return data as Partial<User>
 };
 
+export const validateUuid = (id: string): boolean => {
+    const uuidRegex: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    return !!id.match(uuidRegex);
+};
+
 export const responseHandler = (res: ServerResponse, apiResponse: ApiResponse): void => {
     const { statusCode, message, data } = apiResponse;
 

@@ -8,19 +8,34 @@ import {
     updateUserHandler
 } from '../controllers/users.controller';
 import { responseHandler } from '../helpers/helpers';
-import { responseMessages } from '../controllers/response-messages';
+import { responseMessages } from '../controllers/response-messages.config';
 
-export const routes = (req: IncomingMessage, res: ServerResponse): void => {
-    if (req.url === '/api/users' && req.method === 'GET') {
-        getAllUsers(req, res);
-    } else if (req.url?.match(/\/api\/users\/([a-z0-9-]+)/) && req.method === 'GET') {
-        getUser(req, res);
-    } else if (req.url === '/api/users' && req.method === 'POST') {
-        createUserHandler(req, res);
-    } else if (req.url?.match(/\/api\/users\/([a-z0-9-]+)/) && req.method === 'PUT') {
-        updateUserHandler(req, res);
-    } else if (req.url?.match(/\/api\/users\/([a-z0-9-]+)/) && req.method === 'DELETE') {
-        deleteUserHandler(req, res);
+interface RouteHandler {
+    (req: IncomingMessage, res: ServerResponse): void;
+}
+
+const routes: { [key: string]: RouteHandler } = {
+    'GET /api/users': getAllUsers,
+    'GET /api/users/([a-z0-9-]+)': getUser,
+    'POST /api/users': createUserHandler,
+    'PUT /api/users/([a-z0-9-]+)': updateUserHandler,
+    'DELETE /api/users/([a-z0-9-]+)': deleteUserHandler
+};
+
+const matchRoute = (req: IncomingMessage, route: string): boolean => {
+    const { url = '', method = '' } = req;
+    const [routeMethod, routePattern] = route.split(' ');
+    const regex = new RegExp(`^${routePattern}$`);
+
+    return method.toUpperCase() === routeMethod && url.match(regex) !== null;
+};
+
+export const routeHandler = (req: IncomingMessage, res: ServerResponse): void => {
+    const matchedRoute = Object.keys(routes).find(route => matchRoute(req, route));
+
+    if (matchedRoute) {
+        const handler = routes[matchedRoute];
+        handler(req, res);
     } else {
         responseHandler(res, { statusCode: 404, message: responseMessages.pageNotFound });
     }

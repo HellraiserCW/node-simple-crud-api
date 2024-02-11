@@ -22,14 +22,10 @@ export const addUser = (userData: Partial<User>): User => {
     return newUser;
 };
 
-export const updateUser = (userId: string, userData: Partial<User>): User | undefined => {
+export const updateUser = (userId: string, userData: Partial<User>): User => {
     const index: number = users.findIndex(user => user.id === userId);
-    if (index === -1) {
-        return;
-    }
-    users[index] = { ...users[index], ...userData };
 
-    return users[index];
+    return { ...users[index], ...userData };
 };
 
 export const deleteUser = (userId: string): boolean => {
