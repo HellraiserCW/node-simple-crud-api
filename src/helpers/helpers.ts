@@ -1,27 +1,23 @@
-import { User, UserInput } from '../models/User';
+import { ServerResponse } from 'http';
 
-export const validateUserData = (data: UserInput): { data: Partial<User> | null; errors: string[] | null } => {
-    const errors: string[] = [];
+import { User, UserInput } from '../models/User.model';
+import { ApiResponse } from '../models/Response.model';
 
-    if (data.username && typeof data.username !== 'string') {
-        errors.push('Username must be a string');
+export const validateUserData = (data: UserInput): Partial<User> | null => {
+    if (
+        data.username && typeof data.username !== 'string'
+        || data.age && typeof data.age !== 'number'
+        || data.hobbies && !Array.isArray(data.hobbies)
+    ) {
+        return null;
     }
 
-    if (data.age && typeof data.age !== 'number') {
-        errors.push('Age must be a number');
-    }
+    return data as Partial<User>
+};
 
-    if (data.hobbies && !Array.isArray(data.hobbies)) {
-        errors.push('Hobbies must be an array');
-    }
+export const responseHandler = (res: ServerResponse, apiResponse: ApiResponse): void => {
+    const { statusCode, message, data } = apiResponse;
 
-    return errors.length === 0
-        ? ({
-            data: data as Partial<User>,
-            errors: null
-        })
-        : ({
-            data: null,
-            errors
-        });
+    res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message, data }));
 };
