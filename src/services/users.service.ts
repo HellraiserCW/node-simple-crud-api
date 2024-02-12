@@ -24,8 +24,10 @@ export const addUser = (userData: Partial<User>): User => {
 
 export const updateUser = (userId: string, userData: Partial<User>): User => {
     const index: number = users.findIndex(user => user.id === userId);
+    const updatedUser = { ...users[index], ...userData };
+    users[index] = updatedUser;
 
-    return { ...users[index], ...userData };
+    return updatedUser;
 };
 
 export const deleteUser = (userId: string): boolean => {
@@ -35,4 +37,8 @@ export const deleteUser = (userId: string): boolean => {
     }
 
     return index !== -1;
+};
+
+export const shareUpdateUsers = (newUsers: User[]): void => {
+    users.splice(0, users.length, ...newUsers);
 };

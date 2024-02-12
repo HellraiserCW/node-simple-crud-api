@@ -2,12 +2,15 @@ import { resolve } from 'path';
 
 export default {
     mode: "production",
-    entry: './src/index.ts',
+    entry: {
+        loadBalancer: './src/loadBalancer.ts',
+        worker: './src/index.ts'
+    },
     target: 'node',
     externals: ['node_modules'],
     output: {
         path: resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: '[name].js',
     },
     resolve: {
         extensions: ['.ts', '.js'],

@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jest",
     "start:dev": "nodemon",
-    "start:prod": "npm run build && node --env-file=.env dist/bundle.js",
-    "start:multi": "node dist/bundle.js",
+    "start:prod": "npm run build && node --env-file=.env dist/worker.js",
+    "start:multi": "npm run build && node --env-file=.env dist/loadBalancer.js",
     "build": "webpack --config webpack.config.ts"
   },
   "jest": {

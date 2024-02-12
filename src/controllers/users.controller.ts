@@ -2,7 +2,7 @@ import { IncomingMessage as Req, ServerResponse as Res } from 'http';
 
 import { getUsers, getUserById, addUser, updateUser, deleteUser } from '../services/users.service';
 import { User, UserInput } from '../models/User.model';
-import { validateUserData, responseHandler, validateUuid } from '../helpers/helpers';
+import { validateUserData, responseHandler, validateUuid, shareUpdates } from '../helpers/helpers';
 import { responseMessages } from './response-messages.config';
 
 export const getAllUsers = (_req: Req, res: Res): void => {
@@ -56,6 +56,7 @@ export const createUserHandler = (req: Req, res: Res): void => {
 
                 const newUser: User = addUser(validationResult);
 
+                shareUpdates(getUsers());
                 responseHandler(res, { statusCode: 201, message: responseMessages.created, data: newUser });
             } catch {
                 responseHandler(res, { statusCode: 400, message: responseMessages.invalidJSON });
@@ -99,6 +100,7 @@ export const updateUserHandler = (req: Req, res: Res): void => {
 
                 const updatedUser: User = updateUser(userId, validationResult);
 
+                shareUpdates(getUsers());
                 responseHandler(res, { statusCode: 200, message: responseMessages.updated, data: updatedUser });
             } catch {
                 responseHandler(res, { statusCode: 400, message: responseMessages.invalidJSON });
@@ -125,6 +127,7 @@ export const deleteUserHandler = (req: Req, res: Res): void => {
             return;
         }
 
+        shareUpdates(getUsers());
         responseHandler(res, { statusCode: 204 });
     } catch {
         responseHandler(res, { statusCode: 500, message: responseMessages.internal });
