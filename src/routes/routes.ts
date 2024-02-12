@@ -33,10 +33,7 @@ const matchRoute = (req: IncomingMessage, route: string): boolean => {
 export const routeHandler = (req: IncomingMessage, res: ServerResponse): void => {
     const matchedRoute = Object.keys(routes).find(route => matchRoute(req, route));
 
-    if (matchedRoute) {
-        const handler = routes[matchedRoute];
-        handler(req, res);
-    } else {
-        responseHandler(res, { statusCode: 404, message: responseMessages.pageNotFound });
-    }
+    matchedRoute
+        ? routes[matchedRoute](req, res)
+        : responseHandler(res, { statusCode: 404, message: responseMessages.pageNotFound });
 };

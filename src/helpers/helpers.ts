@@ -4,15 +4,9 @@ import { User, UserInput } from '../models/User.model';
 import { ApiResponse } from '../models/Response.model';
 
 export const validateUserData = (data: UserInput): Partial<User> | null => {
-    if (
-        data.username && typeof data.username !== 'string'
-        || data.age && typeof data.age !== 'number'
-        || data.hobbies && !Array.isArray(data.hobbies)
-    ) {
-        return null;
-    }
-
-    return data as Partial<User>
+    return (typeof data.username !== 'string' || typeof data.age !== 'number' || !Array.isArray(data.hobbies))
+        ? null
+        : data as Partial<User>;
 };
 
 export const validateUuid = (id: string): boolean => {

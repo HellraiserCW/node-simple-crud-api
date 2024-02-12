@@ -2,6 +2,10 @@
 
 This is a simple CRUD (Create, Read, Update, Delete) API built with Node.js. It allows users to perform CRUD operations on a collection of users stored in memory.
 
+## Node
+
+Supported not lower than 20 LTS version of Node.js
+
 ## Installation
 
 1. **Clone the repository:**
